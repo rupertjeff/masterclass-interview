@@ -13,7 +13,7 @@ const buildItem = (flex: boolean = false) => (item) => {
         'w-full sm:w-1/2 md:w-1/3 lg:w-1/4': flex,
     });
     return (
-        <li key={ item.id } className={ classes }>{ item }</li>
+        <li key={ `item-${item.id}` } className={ classes }>{ item }</li>
     );
 };
 

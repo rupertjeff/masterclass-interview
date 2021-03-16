@@ -1,23 +1,14 @@
 import Head from 'next/head';
-import useSWR from 'swr';
-import { fetcher } from '../services/fetcher';
 import { CourseList } from '../components/course/list';
-
-const BASE_URL = 'https://web-interview-api-kjlbv8.herokuapp.com/jsonapi/v1/';
+import { useRouter } from 'next/router';
+import { UserContext } from '../contexts/user';
 
 export default function Home() {
-    const { data, error } = useSWR(`${BASE_URL}/courses`, fetcher);
+    const router = useRouter();
 
-    if (error) {
-        return <div>Oops!</div>;
-    }
-
-    if (!data) {
-        return <div>Loading</div>;
-    }
-
+    // Double render, so we're calling courses twice... not great.
     return (
-        <>
+        <UserContext.Provider value={{ email: String(router.query.email) }}>
             <Head>
                 <title>MasterClass - Course Listing</title>
                 <link rel="icon" href="/favicon.ico"/>
@@ -29,11 +20,11 @@ export default function Home() {
 
             <main className="container mx-auto p-4">
                 <h1>Course Listing</h1>
-                <CourseList data={ data }/>
+                <CourseList/>
             </main>
 
             <footer>
             </footer>
-        </>
+        </UserContext.Provider>
     );
 }
